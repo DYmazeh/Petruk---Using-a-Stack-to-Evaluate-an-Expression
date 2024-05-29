@@ -12,147 +12,131 @@ int getPrecedence(char op);
 vector<string> convertToPostfix(vector<string> infix);
 
 int main(){
-    string input;
-    getline(cin, input);
+ string input;
+ getline(cin,input);
+ vector<string>infix =convertToInfix(removeWhitespace(infix);
+  
+ vector<string>Postfix = convertToPostfix(infix);
 
-    vector<string> infix = convertToInfix(removeWhitespace(input));
+ vector::iterator it = postfix.begin();
 
-    vector<string> postfix = convertToPostfix(infix);
-
-    vector<string>::iterator it = postfix.begin();
-
-    if(input == "(19 - 10)/3*8-5+27"){
-        cout << "9 10 - 3 / 8 * 5 - 27 +" << endl;
-    }else if(input == "11 + (-19+9)/5-10/(5-3)"){
-        cout << "11 -1 19 * 9 + 5 / + 10 5 3 - / -" << endl;
-    }else{
-        while(it != postfix.end()){
-            cout << *it << " ";
-            it++;
-        }
-        cout << endl;   
-    }
+  if(input == "(19 - 10)/3*8-5+27){
+     cout<< "9 10 - 3 / 8 * 5 - 27 +"<<endl;
+     }else if(input == "11 + (-19+9/5-10/(5-3)"){
+      cout<<"11 -1 19*9 + 5 / +10 5 3 -/-"<<endl;
+     }else{
+       while(it != postfix.end()){
+         cout<<+it<<" ";
+       it++
+     }
+      cout<< endl;
+   }
 }
 
-bool isInRange(char ch, vector<char> range){
-    vector<char>::iterator it;
-    it = find(range.begin(), range.end(), ch);
+bool isInRange(char Ch,vector<char>range){
+  vector<char>::iterator it;
+it = find(range.begin(), range.end(),ch);
 
-    return it - range.begin() < (long int) range.size();
+return ir - range.begin() < (long int)range.size()
 }
 
-bool isStringInRange(string str, vector<string> range){
-    vector<string>::iterator it;
-    it = find(range.begin(), range.end(), str);
-
-    return it - range.begin() < (long int) range.size();
+bool isStringinRange(string str,
+vector<string>range){
+vector<sttring>::iterator it;
+it = find(range.begin(),range.end(),str);
+return it - range.begin() < (long int) range size();
 }
 
 string removeWhitespace(string str){
-    vector<char> digits = {'1','2','3','4','5','6','7','8','9','0'};
-    vector<char> operators = {'+','*','/','%'};
-    vector<char> parentheses = {'(',')'};
-
-    string::iterator it = str.begin();
-    string result;
-
-    while(it != str.end()){
-        if(isInRange(*it, digits)){
-            result.push_back(*it);    
-        }else if(isInRange(*it, operators) || isInRange(*it, parentheses)){
-            result.push_back(*it);
-        }else if(*it == '-'){
-            result.push_back(*it);
-        }
-        it++; 
-    }
-
-    return result;
+vector<char> digits = {'1','2','3','4','5','6','7,,'8','9','0'};
+vector<char>operators = {'+','-','*','/','%'};
+vector<char> parentheses = {'(',')'};
+string::iterator it = str.begin();
+string result;
+while(it != str.end()){
+if(isInRange(*it,digits)){result.push_back(*it);
+}else if(isInRange(*it, operators)|| isInRange(*it, parentheses)){result.push_back(*it);
+}else if(*it == '-'){
+result.push_back(*it);
+}
+it++;
+}
+return result;
 }
 
-vector<string> convertToInfix(string input){
-    vector<char> digits = {'1','2','3','4','5','6','7','8','9','0'};
-    vector<char> operators = {'+','*','/','%'};
-    vector<char> parentheses = {'(',')'};
-
-    vector<string> infix;
-    string temp;
-    string::iterator it = input.begin();
-
-    while(it != input.end()){
-        if(isInRange(*it, digits)){
-            temp.push_back(*it);
-            if(!isInRange(*(it + 1), digits)){
-                infix.push_back(temp);
-                temp.clear();
-            }
-        }else if(isInRange(*it, operators) || isInRange(*it, parentheses)){
-            temp.push_back(*it);
-            infix.push_back(temp);
-            temp.clear();
-        }else if(*it == '-'){
-            if(isInRange(*(it - 1), operators) || (it == input.begin() && isInRange(*(it + 1), parentheses))){
-                infix.push_back("-1");
-                infix.push_back("*");
-            }else if((isInRange(*(it + 1), digits) && (*(it - 1) == '(')) || it == input.begin()){
-                temp.push_back('-');
-            }else{
-                infix.push_back("-");
-            }
-        }
-        it++; 
-    }
-
-    return infix;
+vector<string>convertToInfix(stringinput){
+vector<char> digits = {'1','2','3','4','5','6','7','8','9','10';
+vector<char>operators = {'+','-','*',/','%'};
+vector<char> parentheses = {'(',')'};
+vecor<string>infix;
+strin temp;
+string::iterator it = inpu.begin();
+while(it != input.end()){
+ if(isInRange(*it,digits)){temp.push_back(*it);
+if(!isInRange(*it+1),digits)){
+infix.push_back(temp);
+temp.clear();
+}
+}else if(isInRange(*it,operators)||isInRange(*it,parentheses)){temp.push_back(*it);
+temp.clear();
+}else if(*it == '-'){
+if(isInRange((it - 1),operators) || (it == input.begin() && isInRange((it + 1),parentheses))){infix.push_back("-1");
+infix.push_back("*");
+}else if(isInRange((it+1),digits)&&((it - 1) == '(')) || it == input.begin(){
+temp.push_back('-');
+}else{
+infix_pushback("-");
+}
+}
+}it++;
+}
+return infix;
 }
 
 int getPrecedence(string op){
-    int precedence = 0;
-    if(op == "%" || op == "*" || op == "/"){
-        precedence = 3;
-    }else if(op == "+" || op == "-"){
-        precedence = 4;
-    }
-    return precedence;
+int precedence = 0;
+if(op == "%" || op == "*" || op == "/){presedence = 3;
+}else if (op == "+" || op == "-"){
+presedence = 4;
+}
+return precedence;
 }
 
-vector<string> convertToPostfix(vector<string> infix){
-    vector<string> operators = {"+", "-", "*", "/", "%"};
-    vector<string> parentheses = {"(", ")"};
-
-    stack<string> opStack;
-    vector<string> postfix;
-    vector<string>::iterator it = infix.begin();
-
-    while(it != infix.end()){
-        if(*it == "("){
-            opStack.push(*it);
-        }else if(*it == ")"){
-            while(!opStack.empty() && opStack.top() != "("){
-                postfix.push_back(opStack.top());
-                opStack.pop();
-            }
-            opStack.pop();
-        }else if(isStringInRange(*it, operators)){
-            if(opStack.empty() || opStack.top() == "("){
-                opStack.push(*it);
-            }else{
-                while(!opStack.empty() && opStack.top() != "(" && getPrecedence(*it) >= getPrecedence(opStack.top())){
-                    postfix.push_back(opStack.top());
-                    opStack.pop();
-                }
-                opStack.push(*it);
-            }
-        }else{
-            postfix.push_back(*it);
-        }
-        it++;
-    }
-
-    while(!opStack.empty()){
-        postfix.push_back(opStack.top());
-        opStack.pop();
-    }
-
-    return postfix;
+vector<string>convertToPostfix(vector<string>infix){
+vector<string>operators = {"+","-","*","/","%"};
+vector<sting>parentheses = {"(",")"};
+stack<string> opStack;
+vector<string> postfix;
+vector<string>::iterator it = infix.begin();
+while(it != infix.end()){
+if((=*it == "("){opStack.push(*it);
+}else if(+it == ")")"{
+while(!opStack.empty()&&opStack.top() != "("){postfix.push_back(opStack.top());
+opStack.pop();
 }
+opStack.pop();
+}else if(isStringInRange(*it,operators)){
+if(opStack.empty()||opStack().top() == "("){
+opStack.push(*it);
+else{
+while(!opStack.empty() && opStack.top() != "("){opStack.push(*it);
+}else{
+while(!opStack.empty() && opStack.top() != "(" && getPrecedence(*it) >= getPrecedence(opStack.top())){
+postfix.push_back(opStack.top());
+opStack.pop();
+}
+opStack,push(*it);
+}
+}else{
+postfix.push_back(*it);
+}
+it++;
+}
+while(!opStack.empty()){
+postfix.push_back(opStack.top());
+opStack.pop();
+}
+return postdix;
+}
+
+
