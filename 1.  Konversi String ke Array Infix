@@ -1,113 +1,106 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+bool cek(char ch, vector<char> range);
 
-bool check(char ch, vector<char> range);
+vector<string> konversiKeInfix(string input);
 
+string hapusSpasi(string str);
 
-vector<string> convertToInfix(string input);
-
-
-string removeWhitespace(string str);
-
-int main(){
+int main() {
     vector<string> infix;
 
     string input;
-    getline(cin,input);
+    getline(cin, input);
 
-    infix = convertToInfix(removeWhitespace(input));
+    infix = konversiKeInfix(hapusSpasi(input));
 
     vector<string>::iterator it = infix.begin();
 
-   
-    while(it != infix.end()){
+    while (it != infix.end()) {
         cout << *it << " ";
         it++;
     }
     cout << endl;
 }
 
-bool check(char ch, vector<char> range){
+bool cek(char ch, vector<char> range) {
     vector<char>::iterator it;
-    it = find(range.begin(),range.end(),ch);
+    it = find(range.begin(), range.end(), ch);
 
-    
-    return it-range.begin() < (long int) range.size();
+    return it - range.begin() < (long int)range.size();
 }
 
-string removeWhitespace(string str){
-   
-    vector<char> bilangan = {'1','2','3','4','5','6','7','8','9','0'};
-    vector<char> op = {'+','*','/','%'};
-    vector<char> kurung = {'(',')'};
+string hapusSpasi(string str) {
+    vector<char> bilangan = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+    vector<char> op = {'+', '*', '/', '%'};
+    vector<char> kurung = {'(', ')'};
 
     string::iterator i = str.begin();
-    string result;
+    string hasil;
 
-    while(i != str.end()){
-        
-        if(check(*i,bilangan)){
-               result.push_back(*i);    
-        
-        }else if(check(*i,op) || check(*i,kurung)){
-            result.push_back(*i);
-        
-        }else if(*i == '-'){
-            result.push_back(*i);
+    while (i != str.end()) {
+        if (cek(*i, bilangan)) {
+            hasil.push_back(*i);
+
+            if (!cek(*(i + 1), bilangan)) {
+                infix.push_back(hasil);
+                hasil.clear();
+            }
+        } else if (cek(*i, op) || cek(*i, kurung)) {
+            hasil.push_back(*i);
+            infix.push_back(hasil);
+            hasil.clear();
+        } else if (*i == '-') {
+            if (cek(*(i - 1), op) || *(i - 1) == '(' || (i == str.begin() && *(i + 1) == '(')) {
+                infix.push_back("-1");
+                infix.push_back("*");
+            } else if ((cek(*(i + 1), bilangan) && cek(*(i - 1), op)) || i == str.begin()) {
+                hasil.push_back('-');
+            } else {
+                infix.push_back("-");
+            }
         }
 
-        i++; 
+        i++;
     }
 
-    return result;
+    return hasil;
 }
 
-vector<string> convertToInfix(string input){
-   
-    vector<char> bilangan = {'1','2','3','4','5','6','7','8','9','0'};
-    vector<char> op = {'+','*','/','%'};
-    vector<char> kurung = {'(',')'};
+vector<string> konversiKeInfix(string input) {
+    vector<char> bilangan = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+    vector<char> op = {'+', '*', '/', '%'};
+    vector<char> kurung = {'(', ')'};
 
     vector<string> infix;
     string temp;
     string::iterator i = input.begin();
 
-   
-    while(i != input.end()){
-        
-        if(check(*i,bilangan)){
-           
+    while (i != input.end()) {
+        if (cek(*i, bilangan)) {
             temp.push_back(*i);
-            
-            if(!check(*(i+1),bilangan)){
+
+            if (!cek(*(i + 1), bilangan)) {
                 infix.push_back(temp);
                 temp.clear();
             }
-       
-        }else if(check(*i,op) || check(*i,kurung)){
-            
+        } else if (cek(*i, op) || cek(*i, kurung)) {
             temp.push_back(*i);
             infix.push_back(temp);
             temp.clear();
-        
-        }else if(*i == '-'){
-            
-            if(check(*(i-1),op) || *(i-1) == '(' || (i == input.begin() && *(i+1) == '(')){
-                
+        } else if (*i == '-') {
+            if (cek(*(i - 1), op) || *(i - 1) == '(' || (i == input.begin() && *(i + 1) == '(')) {
                 infix.push_back("-1");
                 infix.push_back("*");
-            
-            }else if((check(*(i+1),bilangan) && check(*(i-1),op)) || i == input.begin()){
-               
+            } else if ((cek(*(i + 1), bilangan) && cek(*(i - 1), op)) || i == input.begin()) {
                 temp.push_back('-');
-            }else{
-                
+            } else {
                 infix.push_back("-");
             }
         }
 
-        i++; 
+        i++;
     }
 
     return infix;
